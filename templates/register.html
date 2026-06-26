@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Health Reminder Dashboard</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-page">
+
+    <div class="login-container">
+        <div class="glass-panel login-card">
+            <div class="logo-section text-center mb-4" style="justify-content: center; display: flex;">
+                <h1><i class="fa-solid fa-heart-pulse"></i> HealthTrack</h1>
+            </div>
+            <h2 class="text-center" style="justify-content: center; margin-bottom: 2rem;">Create Account</h2>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {% if category == 'error' %}error{% endif %}">
+                            {% if category == 'error' %}
+                                <span><i class="fa-solid fa-circle-exclamation"></i> {{ message }}</span>
+                            {% else %}
+                                <span><i class="fa-solid fa-circle-check"></i> {{ message }}</span>
+                            {% endif %}
+                            <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="this.parentElement.style.display='none';"></i>
+                        </div>
+                    {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('register') }}" method="POST">
+                <div class="form-group">
+                    <label for="email"><i class="fa-solid fa-envelope"></i> Email ID</label>
+                    <input type="email" id="email" name="email" class="form-control" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required placeholder="Choose a secure password" minlength="4">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.75rem;">
+                    Register <i class="fa-solid fa-user-plus"></i>
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <p style="font-size: 0.95rem;">Already have an account? <a href="{{ url_for('login') }}" style="color: var(--accent-color); font-weight: 600; text-decoration: none;">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Medicine - HealthTrack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container" style="max-width: 600px;">
+        <header>
+            <div class="logo-section">
+                <h1><i class="fa-solid fa-heart-pulse"></i> HealthTrack</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            </nav>
+        </header>
+
+        <div class="glass-panel">
+            <h2><i class="fa-solid fa-pills"></i> Add New Medicine Reminder</h2>
+            <form method="POST" action="{{ url_for('add_medicine') }}" class="mt-4">
+                
+                <div class="form-group">
+                    <label for="name">Medicine Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Paracetamol" required>
+                </div>
+                
+                <div class="form-group d-flex gap-2">
+                    <div style="flex: 1;">
+                        <label for="time">Time</label>
+                        <input type="time" id="time" name="time" class="form-control" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="frequency">Frequency</label>
+                        <select id="frequency" name="frequency" class="form-control">
+                            <option value="Daily">Daily</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="As Needed">As Needed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Reminder
+                    </button>
+                    <a href="{{ url_for('dashboard') }}" style="display: block; margin-top: 1rem; color: var(--text-secondary); text-decoration: none;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Reminder Dashboard</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo-section">
+                <h1><i class="fa-solid fa-heart-pulse"></i> HealthTrack</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}" class="active">Dashboard</a>
+                <a href="{{ url_for('add_medicine') }}">Add Medicine</a>
+                <a href="{{ url_for('add_appointment') }}">Add Appointment</a>
+                <a href="{{ url_for('logout') }}" style="color: var(--danger-color);"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </nav>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="flash-message">
+                        <span><i class="fa-solid fa-circle-check"></i> {{ message }}</span>
+                        <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="this.parentElement.style.display='none';"></i>
+                    </div>
+                {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="dashboard-grid">
+            
+            <!-- Daily TIP -->
+            <div class="glass-panel tip-card" style="grid-column: 1 / -1;">
+                <h2><i class="fa-solid fa-lightbulb"></i> Daily Health Tip</h2>
+                <p style="font-size: 1.1rem; color: var(--text-primary);">{{ daily_tip }}</p>
+            </div>
+
+            <!-- Medicines Panel -->
+            <div class="glass-panel">
+                <h2><i class="fa-solid fa-pills"></i> Today's Medicines</h2>
+                {% if medicines %}
+                    <ul class="item-list">
+                    {% for med in medicines %}
+                        <li class="item-card">
+                            <div class="item-info">
+                                <span class="item-title">{{ med.name }} <span class="badge daily">{{ med.frequency }}</span></span>
+                                <span class="item-meta"><i class="fa-regular fa-clock"></i> {{ med.time }}</span>
+                            </div>
+                            <a href="{{ url_for('complete_task', type='medicine', id=med.id) }}" class="btn-icon-check" title="Mark as taken">
+                                <i class="fa-solid fa-check"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
+                        <p>No medicines scheduled for today.</p>
+                    </div>
+                {% endif %}
+                <div class="mt-4 text-center">
+                    <a href="{{ url_for('add_medicine') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add Medicine</a>
+                </div>
+            </div>
+
+            <!-- Appointments Panel -->
+            <div class="glass-panel">
+                <h2><i class="fa-solid fa-user-doctor"></i> Upcoming Appointments</h2>
+                {% if appointments %}
+                    <ul class="item-list">
+                    {% for apt in appointments %}
+                        <li class="item-card">
+                            <div class="item-info">
+                                <span class="item-title">Dr. {{ apt.doctor }} <span class="badge upcoming">Upcoming</span></span>
+                                <span class="item-meta">
+                                    <i class="fa-regular fa-calendar"></i> {{ apt.date }} at {{ apt.time }} <br/>
+                                    <i class="fa-solid fa-location-dot"></i> {{ apt.location }}
+                                </span>
+                            </div>
+                            <a href="{{ url_for('complete_task', type='appointment', id=apt.id) }}" class="btn-icon-check" title="Mark as completed">
+                                <i class="fa-solid fa-check"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fa-regular fa-calendar-xmark"></i>
+                        <p>No upcoming appointments.</p>
+                    </div>
+                {% endif %}
+                <div class="mt-4 text-center">
+                    <a href="{{ url_for('add_appointment') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add Appointment</a>
+                </div>
+            </div>
+
+            <!-- Completed Panel -->
+            <div class="glass-panel" style="grid-column: 1 / -1;">
+                <h2><i class="fa-solid fa-list-check"></i> Recently Completed Tasks</h2>
+                {% if completed %}
+                    <ul class="item-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+                    {% for task in completed|reverse %}
+                        <li class="item-card" style="margin-bottom: 0;">
+                            <div class="item-info">
+                                <span class="item-title" style="color: var(--text-secondary); text-decoration: line-through;">{{ task.name }}</span>
+                                <span class="item-meta"><i class="fa-solid fa-check-double"></i> {{ task.time_completed }}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-ghost"></i>
+                        <p>No completed tasks yet.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

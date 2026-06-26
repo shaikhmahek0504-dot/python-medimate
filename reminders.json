@@ -1,0 +1,16 @@
+{
+    "medicines": [],
+    "appointments": [],
+    "completed": [],
+    "tips": [],
+    "users": [
+        {
+            "email": "shaikhmahek0504@gmail.com",
+            "password": "123456"
+        },
+        {
+            "email": "abc@gmail.com",
+            "password": "09876"
+        }
+    ]
+}
